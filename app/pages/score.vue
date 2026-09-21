@@ -2,7 +2,7 @@
 import { HAND_SIZE, handSize } from '~~/engine/hand'
 import { emptyManualSelection, ManualGroup, MAX_DRAGON_PUNGS, MAX_FLOWER_KONGS, MAX_SEAT_FLOWERS, scoreManual } from '~~/engine/manual-scoring'
 import { settle, type Stakes } from '~~/engine/money'
-import { Blessing, effectiveWinMethod, FlowerWin, LastTile, ReadyDeclaration, scoreHand, Tai, TAI_VALUES, Wind, WinMethod } from '~~/engine/scoring'
+import { Blessing, BLESSING_TAI, effectiveWinMethod, FLOWER_WIN_TAI, FlowerWin, LAST_TILE_TAI, LastTile, READY_DECLARATION_TAI, ReadyDeclaration, scoreHand, Tai, TAI_VALUES, Wind, WinMethod } from '~~/engine/scoring'
 import { tileName } from '~~/engine/tile'
 import { analyseWaits } from '~~/engine/waits'
 
@@ -59,6 +59,22 @@ const { hand } = useHand()
 const { mode, selection } = useScoringMode()
 const isManual = computed(() => mode.value === ScoringMode.Manual)
 const resetSelection = () => { selection.value = emptyManualSelection() }
+/** 八仙過海必然自摸、七搶一必然放槍，開啟時一併切換胡牌方式。 */
+const FLOWER_WIN_METHOD: Partial<Record<FlowerWin, WinMethod>> = {
+  [FlowerWin.EightImmortals]: WinMethod.SelfDraw,
+  [FlowerWin.SevenRobOne]: WinMethod.Discard,
+}
+const toggleFlowerWin = (value: FlowerWin) => {
+  const next = situation.value.flowerWin === value ? FlowerWin.None : value
+  situation.value.flowerWin = next
+  const method = FLOWER_WIN_METHOD[next]
+  if (method) situation.value.winMethod = method
+}
+/** 槓上開花必然自摸，開啟時一併切換胡牌方式。 */
+const toggleKongReplacement = () => {
+  situation.value.isKongReplacement = !situation.value.isKongReplacement
+  if (situation.value.isKongReplacement) situation.value.winMethod = WinMethod.SelfDraw
+}
 const situation = useSituation()
 const stakes = useStakes()
 
@@ -68,7 +84,9 @@ const isWaiting = computed(() => waitingTiles.value.length > 0)
 watch(waitingTiles, (tiles) => {
   if (tiles.length && !tiles.includes(situation.value.winningTile)) situation.value.winningTile = tiles[0]!
 }, { immediate: true })
-const automaticScore = computed(() => (isComplete.value ? scoreHand(hand.value, situation.value) : null))
+const isFlowerWin = computed(() => situation.value.flowerWin !== FlowerWin.None)
+/** 花胡唔使成胡型，手牌未滿都計到。 */
+const automaticScore = computed(() => (isComplete.value || isFlowerWin.value ? scoreHand(hand.value, situation.value) : null))
 const score = computed(() => (isManual.value ? scoreManual(selection.value, situation.value) : automaticScore.value))
 const settlement = computed(() => (score.value ? settle(stakes.value, score.value.total, effectiveWinMethod(situation.value)) : null))
 const isPreset = (preset: Stakes) => preset.base === stakes.value.base && preset.perTai === stakes.value.perTai
@@ -119,6 +137,7 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
           @click="situation.winMethod = method"
         >
           {{ label }}
+          <span v-if="method === WinMethod.SelfDraw" class="choice-sub">{{ TAI_VALUES[Tai.ZiMo] }} 台</span>
         </button>
       </div>
     </section>
@@ -204,9 +223,9 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
           莊家
           <span class="choice-sub">{{ situation.isDealer && situation.dealerStreak ? `連 ${situation.dealerStreak}` : '1 台' }}</span>
         </button>
-        <button type="button" class="choice" :class="{ 'choice-active': situation.isKongReplacement }" @click="situation.isKongReplacement = !situation.isKongReplacement">
+        <button type="button" class="choice" :class="{ 'choice-active': situation.isKongReplacement }" @click="toggleKongReplacement">
           槓上開花
-          <span class="choice-sub">含自摸</span>
+          <span class="choice-sub">{{ TAI_VALUES[Tai.GangShangKaiHua] }} 台</span>
         </button>
         <button type="button" class="choice" :class="{ 'choice-active': situation.isRobbingKong }" @click="situation.isRobbingKong = !situation.isRobbingKong">
           搶槓
@@ -222,36 +241,36 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
     <section class="flex flex-col gap-2">
       <div class="section-label">海底 / 河底</div>
       <div class="grid grid-cols-2 gap-2">
-        <button v-for="(label, value) in LAST_TILE_LABELS" :key="value" type="button" class="choice" :class="{ 'choice-active': situation.lastTile === value }" @click="situation.lastTile = situation.lastTile === value ? LastTile.None : value">{{ label }}</button>
+        <button v-for="(label, value) in LAST_TILE_LABELS" :key="value" type="button" class="choice" :class="{ 'choice-active': situation.lastTile === value }" @click="situation.lastTile = situation.lastTile === value ? LastTile.None : value">{{ label }}<span class="choice-sub">{{ TAI_VALUES[LAST_TILE_TAI[value]!] }} 台</span></button>
       </div>
     </section>
 
     <section class="flex flex-col gap-2">
       <div class="section-label">天地人胡</div>
       <div class="grid grid-cols-3 gap-2">
-        <button v-for="(label, value) in BLESSING_LABELS" :key="value" type="button" class="choice" :class="{ 'choice-active': situation.blessing === value }" @click="situation.blessing = situation.blessing === value ? Blessing.None : value">{{ label }}</button>
+        <button v-for="(label, value) in BLESSING_LABELS" :key="value" type="button" class="choice" :class="{ 'choice-active': situation.blessing === value }" @click="situation.blessing = situation.blessing === value ? Blessing.None : value">{{ label }}<span class="choice-sub">{{ TAI_VALUES[BLESSING_TAI[value]!] }} 台</span></button>
       </div>
     </section>
 
     <section class="flex flex-col gap-2">
       <div class="section-label">聽牌宣告</div>
       <div class="grid grid-cols-3 gap-2">
-        <button v-for="(label, value) in READY_DECLARATION_LABELS" :key="value" type="button" class="choice" :class="{ 'choice-active': situation.readyDeclaration === value }" @click="situation.readyDeclaration = situation.readyDeclaration === value ? ReadyDeclaration.None : value">{{ label }}</button>
+        <button v-for="(label, value) in READY_DECLARATION_LABELS" :key="value" type="button" class="choice" :class="{ 'choice-active': situation.readyDeclaration === value }" @click="situation.readyDeclaration = situation.readyDeclaration === value ? ReadyDeclaration.None : value">{{ label }}<span class="choice-sub">{{ TAI_VALUES[READY_DECLARATION_TAI[value]!] }} 台</span></button>
       </div>
     </section>
 
     <section class="flex flex-col gap-2">
       <div class="section-label">花牌胡</div>
       <div class="grid grid-cols-2 gap-2">
-        <button v-for="(label, value) in FLOWER_WIN_LABELS" :key="value" type="button" class="choice" :class="{ 'choice-active': situation.flowerWin === value }" @click="situation.flowerWin = situation.flowerWin === value ? FlowerWin.None : value">{{ label }}</button>
+        <button v-for="(label, value) in FLOWER_WIN_LABELS" :key="value" type="button" class="choice" :class="{ 'choice-active': situation.flowerWin === value }" @click="toggleFlowerWin(value)">{{ label }}<span class="choice-sub">{{ TAI_VALUES[FLOWER_WIN_TAI[value]!] }} 台</span></button>
       </div>
     </section>
 
     <section class="flex flex-col gap-2">
       <div class="section-label">台數明細</div>
       <div class="panel px-4 py-2">
-        <div v-if="!isManual && !isComplete" class="py-2 text-sm opacity-60">手牌要滿 {{ HAND_SIZE }} 張才能算台，請到「聽牌」頁輸入手牌。</div>
-        <div v-else-if="!isManual && !isWaiting" class="py-2 text-sm text-error">手牌尚未聽牌，無法算台。</div>
+        <div v-if="!isManual && !isFlowerWin && !isComplete" class="py-2 text-sm opacity-60">手牌要滿 {{ HAND_SIZE }} 張才能算台，請到「聽牌」頁輸入手牌。</div>
+        <div v-else-if="!isManual && !isFlowerWin && !isWaiting" class="py-2 text-sm text-error">手牌尚未聽牌，無法算台。</div>
         <div v-else-if="!isManual && !score" class="py-2 text-sm text-error">沒胡：{{ tileName(situation.winningTile) }} 無法和手牌組成五組面子加一對將。</div>
         <ul v-else-if="score && score.lines.length" class="divide-y divide-base-300">
           <li v-for="(line, i) in score.lines" :key="i" class="flex justify-between py-2">

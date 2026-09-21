@@ -1,4 +1,4 @@
-import { effectiveWinMethod, finaliseScore, line, lineIf, lines, situationalLines, Tai, WinMethod, type Score, type ScoreLine, type Situation } from './scoring'
+import { effectiveWinMethod, finaliseScore, FlowerWin, line, lineIf, lines, scoreFlowerWin, situationalLines, Tai, WinMethod, type Score, type ScoreLine, type Situation } from './scoring'
 
 /** 同組單選嘅台種組別。 */
 export enum ManualGroup {
@@ -48,6 +48,7 @@ const optional = (name: Tai | undefined): ScoreLine[] => (name ? [line(name)] : 
 
 /** 手動模式計台：勾選嘅台加局面台，天地人胡排除規則照用。 */
 export const scoreManual = (selection: ManualSelection, situation: Situation): Score => {
+  if (situation.flowerWin !== FlowerWin.None) return scoreFlowerWin(situation)
   const isSelfDraw = effectiveWinMethod(situation) === WinMethod.SelfDraw
   const isMenQing = selection.groups[ManualGroup.Front] === Tai.MenQing
   return finaliseScore([

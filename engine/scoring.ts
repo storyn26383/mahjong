@@ -166,21 +166,21 @@ const CONCEALED_PUNG_TAI: Partial<Record<number, Tai>> = {
   4: Tai.SiAnKe,
   5: Tai.WuAnKe,
 }
-const LAST_TILE_TAI: Partial<Record<LastTile, Tai>> = {
+export const LAST_TILE_TAI: Partial<Record<LastTile, Tai>> = {
   [LastTile.Sea]: Tai.HaiDiLaoYue,
   [LastTile.River]: Tai.HeDiLaoYu,
 }
-const BLESSING_TAI: Partial<Record<Blessing, Tai>> = {
+export const BLESSING_TAI: Partial<Record<Blessing, Tai>> = {
   [Blessing.Heaven]: Tai.TianHu,
   [Blessing.Earth]: Tai.DiHu,
   [Blessing.Human]: Tai.RenHu,
 }
-const READY_DECLARATION_TAI: Partial<Record<ReadyDeclaration, Tai>> = {
+export const READY_DECLARATION_TAI: Partial<Record<ReadyDeclaration, Tai>> = {
   [ReadyDeclaration.Heaven]: Tai.TianTing,
   [ReadyDeclaration.Earth]: Tai.DiTing,
   [ReadyDeclaration.Migi]: Tai.MiJi,
 }
-const FLOWER_WIN_TAI: Partial<Record<FlowerWin, Tai>> = {
+export const FLOWER_WIN_TAI: Partial<Record<FlowerWin, Tai>> = {
   [FlowerWin.SevenRobOne]: Tai.QiQiangYi,
   [FlowerWin.EightImmortals]: Tai.BaXianGuoHai,
 }
@@ -367,7 +367,7 @@ const scoreDecomposition = (context: Context): Score =>
   finaliseScore([...HAND_DETECTORS.flatMap(detect => detect(context)), ...situationalLines(context.situation)], context.situation)
 
 /** 七搶一、八仙過海唔使成胡型，唔加其他花台，其他局面台照疊；八仙過海算自摸。 */
-const scoreFlowerWin = (situation: Situation): Score => toScore([
+export const scoreFlowerWin = (situation: Situation): Score => toScore([
   line(FLOWER_WIN_TAI[situation.flowerWin]!),
   ...lineIf(effectiveWinMethod(situation) === WinMethod.SelfDraw, Tai.ZiMo),
   ...situationalLines(situation),

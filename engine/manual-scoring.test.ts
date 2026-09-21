@@ -55,3 +55,15 @@ describe('scoreManual', () => {
     expect(breakdown(score.lines)).toEqual({ [Tai.GangShangKaiHua]: 1, [Tai.ZiMo]: 1 })
   })
 })
+
+describe('scoreManual: flower wins', () => {
+  test('八仙過海 scores in manual mode, counts as self-draw and keeps situational tai', () => {
+    const score = scoreManual(selection({ pingHu: true }), situation({ flowerWin: FlowerWin.EightImmortals, isDealer: true }))
+    expect(breakdown(score.lines)).toEqual({ [Tai.BaXianGuoHai]: 8, [Tai.ZiMo]: 1, [Tai.ZhuangJia]: 1 })
+  })
+
+  test('七搶一 scores in manual mode by discard only', () => {
+    const score = scoreManual(selection(), situation({ flowerWin: FlowerWin.SevenRobOne, winMethod: WinMethod.SelfDraw }))
+    expect(breakdown(score.lines)).toEqual({ [Tai.QiQiangYi]: 8 })
+  })
+})
