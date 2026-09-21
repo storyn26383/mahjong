@@ -4,11 +4,11 @@
 
 **Blocked by:** None — can start immediately
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Nuxt 項目以 Bun 管理套件，`ssr` 關閉
-- [ ] Tailwind + daisyUI 生效，tab 用 daisyUI class
-- [ ] 三個 page 各自可以由底部 tab 導航到
-- [ ] 規則引擎目錄存在，有一個純 TS 模組同一個 `bun test` 通過嘅 smoke test
-- [ ] `nuxi generate` 成功，輸出目錄可以用靜態伺服器打開
-- [ ] 介面文字繁體中文
+- [x] Nuxt 項目以 Bun 管理套件，`ssr` 關閉
+- [x] Tailwind + daisyUI 生效，tab 用 daisyUI class
+- [x] 三個 page 各自可以由底部 tab 導航到
+- [x] 規則引擎目錄存在，有一個純 TS 模組同一個 `bun test` 通過嘅 smoke test
+- [x] `nuxi generate` 成功，輸出目錄可以用靜態伺服器打開
+- [x] 介面文字繁體中文

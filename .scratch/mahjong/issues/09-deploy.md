@@ -4,9 +4,9 @@
 
 **Blocked by:** 01 — 項目骨架
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] GitHub Actions workflow：Bun 安裝、`nuxi generate`、部署到 Pages
-- [ ] Base path 由 `NUXT_APP_BASE_URL` 環境變數決定，預設 `/`
-- [ ] Web manifest 有名稱、圖示、獨立顯示模式
-- [ ] 本地用靜態伺服器打開輸出目錄驗證路由同資源路徑正確
+- [x] GitHub Actions workflow：Bun 安裝、`nuxi generate`、部署到 Pages
+- [x] Base path 由 `NUXT_APP_BASE_URL` 環境變數決定，預設 `/`
+- [x] Web manifest 有名稱、圖示、獨立顯示模式
+- [x] 本地用靜態伺服器打開輸出目錄驗證路由同資源路徑正確
