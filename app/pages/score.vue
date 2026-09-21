@@ -82,7 +82,7 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
     </div>
 
     <section class="flex flex-col gap-2">
-      <div class="section-label">1. 玩多大？（底 / 台）</div>
+      <div class="section-label">玩多大？（底 / 台）</div>
       <div class="grid grid-cols-4 gap-2">
         <button
           v-for="preset in STAKE_PRESETS"
@@ -108,7 +108,7 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
     </section>
 
     <section class="flex flex-col gap-2">
-      <div class="section-label">2. 胡牌方式</div>
+      <div class="section-label">胡牌方式</div>
       <div class="grid grid-cols-2 gap-2">
         <button
           v-for="(label, method) in WIN_METHOD_LABELS"
@@ -124,7 +124,7 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
     </section>
 
     <section v-if="!isManual" class="flex flex-col gap-2">
-      <div class="section-label">3. 胡的牌</div>
+      <div class="section-label">胡的牌</div>
       <div v-if="!waitingTiles.length" class="text-sm opacity-60">手牌尚未聽牌，沒有可選的牌</div>
       <div v-else class="flex flex-wrap gap-1.5">
         <button
@@ -143,12 +143,12 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
 
     <section v-if="isManual" class="flex flex-col gap-4">
       <div class="flex items-center justify-between">
-        <div class="section-label">3. 勾選台種</div>
+        <div class="section-label">勾選台種</div>
         <button type="button" class="text-sm opacity-60" @click="resetSelection">清除</button>
       </div>
       <div v-for="group in SINGLE_GROUPS" :key="group.key" class="flex flex-col gap-1.5">
         <div class="section-label">{{ group.label }}</div>
-        <div class="grid grid-cols-3 gap-2">
+        <div class="grid gap-2" :class="group.key === ManualGroup.Winds ? 'grid-cols-4' : 'grid-cols-3'">
           <button
             v-for="tai in group.options"
             :key="tai"
@@ -169,37 +169,36 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
       </div>
       <div class="flex flex-col gap-1.5">
         <div class="section-label">牌型</div>
-        <div class="grid grid-cols-3 gap-2">
+        <div class="grid grid-cols-2 gap-2">
           <button type="button" class="choice" :class="{ 'choice-active': selection.pingHu }" @click="selection.pingHu = !selection.pingHu">{{ Tai.PingHu }}<span class="choice-sub">{{ TAI_VALUES[Tai.PingHu] }} 台</span></button>
           <button type="button" class="choice" :class="{ 'choice-active': selection.pengPengHu }" @click="selection.pengPengHu = !selection.pengPengHu">{{ Tai.PengPengHu }}<span class="choice-sub">{{ TAI_VALUES[Tai.PengPengHu] }} 台</span></button>
         </div>
       </div>
       <div class="flex flex-col gap-1.5">
         <div class="section-label">花</div>
-        <div class="grid grid-cols-3 gap-2">
+        <div class="grid grid-cols-2 gap-2">
           <TaiStepper v-model="selection.seatFlowers" :tai="Tai.ZhengHua" :max="MAX_SEAT_FLOWERS" />
           <TaiStepper v-model="selection.flowerKongs" :tai="Tai.HuaGang" :max="MAX_FLOWER_KONGS" />
         </div>
       </div>
     </section>
 
-    <section class="grid grid-cols-2 gap-4">
-      <div class="flex flex-col gap-2">
-        <div class="section-label">4. 圈風</div>
-        <div class="grid grid-cols-4 gap-1.5">
-          <button v-for="(label, wind) in WIND_LABELS" :key="wind" type="button" class="choice min-h-11 px-0" :class="{ 'choice-active': situation.roundWind === Number(wind) }" @click="situation.roundWind = Number(wind)">{{ label }}</button>
-        </div>
+    <section v-if="!isManual" class="flex flex-col gap-2">
+      <div class="section-label">圈風</div>
+      <div class="grid grid-cols-4 gap-2">
+        <button v-for="(label, wind) in WIND_LABELS" :key="wind" type="button" class="choice" :class="{ 'choice-active': situation.roundWind === Number(wind) }" @click="situation.roundWind = Number(wind)">{{ label }}</button>
       </div>
-      <div class="flex flex-col gap-2">
-        <div class="section-label">5. 門風</div>
-        <div class="grid grid-cols-4 gap-1.5">
-          <button v-for="(label, wind) in WIND_LABELS" :key="wind" type="button" class="choice min-h-11 px-0" :class="{ 'choice-active': situation.seatWind === Number(wind) }" @click="situation.seatWind = Number(wind)">{{ label }}</button>
-        </div>
+    </section>
+
+    <section v-if="!isManual" class="flex flex-col gap-2">
+      <div class="section-label">門風</div>
+      <div class="grid grid-cols-4 gap-2">
+        <button v-for="(label, wind) in WIND_LABELS" :key="wind" type="button" class="choice" :class="{ 'choice-active': situation.seatWind === Number(wind) }" @click="situation.seatWind = Number(wind)">{{ label }}</button>
       </div>
     </section>
 
     <section class="flex flex-col gap-2">
-      <div class="section-label">6. 局面</div>
+      <div class="section-label">局面</div>
       <div class="grid grid-cols-3 gap-2">
         <button type="button" class="choice" :class="{ 'choice-active': situation.isDealer }" @click="situation.isDealer = !situation.isDealer">
           莊家
