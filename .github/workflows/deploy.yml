@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
+      NUXT_APP_BASE_URL: ${{ vars.NUXT_APP_BASE_URL || '/' }}
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2

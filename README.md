@@ -45,7 +45,7 @@ app/       Nuxt 頁面同組件，只負責收集輸入、調用引擎、渲染�
 
 ## 部署
 
-推上 GitHub 之後，喺 repo Settings → Pages 揀 Source 為 **GitHub Actions**。`.github/workflows/deploy.yml` 會用 repo 名做 base path（`NUXT_APP_BASE_URL=/<repo>/`）build 同部署。
+推上 GitHub 之後，喺 repo Settings → Pages 揀 Source 為 **GitHub Actions**，`.github/workflows/deploy.yml` 會自動 build 同部署，預設 base path 係 `/`（適合自訂網域或者 `<user>.github.io` repo）。如果係部署到 `<user>.github.io/<repo>/` 呢類子路徑，喺 Settings → Secrets and variables → Actions → Variables 加 `NUXT_APP_BASE_URL`，值係 `/<repo>/`。
 
 本地或者其他靜態托管：
 
