@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="20" fill="#f4f1ea"/>
+  <rect x="22" y="14" width="84" height="100" rx="10" fill="#fffdf7" stroke="#8b7d5a" stroke-width="4"/>
+  <text x="64" y="86" font-size="60" font-weight="700" text-anchor="middle" fill="#1c6b3a" font-family="sans-serif">發</text>
+</svg>

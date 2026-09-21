@@ -1,0 +1,9 @@
+{
+  "name": "臺灣麻將小工具",
+  "short_name": "麻將",
+  "display": "standalone",
+  "start_url": "./",
+  "background_color": "#f4f1ea",
+  "theme_color": "#1c6b3a",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
