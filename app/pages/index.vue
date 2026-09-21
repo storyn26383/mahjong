@@ -21,7 +21,7 @@ const INNER_END = SIZE - INNER_START
 const STACK_WIDTH = (INNER_END - INNER_START) / STACKS_PER_WALL
 /** 高亮由頭兩墩起沿取牌方向漸淡，跨呢個數量嘅墩。 */
 const FADE_STACKS = 8
-const SEAT_LABEL_INSET = 26
+const SEAT_LABEL_INSET = 34
 /** 莊家第一手取 4 張，即 2 墩。 */
 const FIRST_DRAW_STACKS = 2
 const WALL_ORDER: Record<DrawDirection, Position[]> = {
@@ -55,6 +55,12 @@ const highlightOpacity = (index: number): number => {
   return Math.max(0, 1 - (steps - FIRST_DRAW_STACKS + 1) / FADE_STACKS)
 }
 
+/** 開門嗰面係東，之後逆時針（自己→下家→對家→上家）補南西北。 */
+const WIND_NAMES = ['東', '南', '西', '北']
+const SEAT_ORDER = [Position.Bottom, Position.Right, Position.Top, Position.Left]
+const windOf = (position: Position): string =>
+  WIND_NAMES[(SEAT_ORDER.indexOf(position) - SEAT_ORDER.indexOf(result.value.wall) + SEAT_ORDER.length) % SEAT_ORDER.length]!
+
 const SEAT_LABEL_POINTS: Record<Position, { x: number, y: number }> = {
   [Position.Bottom]: { x: SIZE / 2, y: INNER_END - SEAT_LABEL_INSET },
   [Position.Right]: { x: INNER_END - SEAT_LABEL_INSET - 6, y: SIZE / 2 },
@@ -76,12 +82,18 @@ const SEAT_LABEL_POINTS: Record<Position, { x: number, y: number }> = {
           />
         </g>
         <g v-for="(point, position) in SEAT_LABEL_POINTS" :key="position">
-          <rect :x="point.x - 24" :y="point.y - 14" width="48" height="28" rx="8" :fill="position === Position.Bottom ? 'var(--color-neutral)' : '#ffffff'" />
+          <rect :x="point.x - 24" :y="point.y - 22" width="48" height="44" rx="8" :fill="position === Position.Bottom ? 'var(--color-neutral)' : '#ffffff'" />
           <text
-            :x="point.x" :y="point.y + 1"
+            :x="point.x" :y="point.y - 8"
             text-anchor="middle" dominant-baseline="middle"
             :fill="position === Position.Bottom ? 'var(--color-neutral-content)' : '#1f2f45'"
-            font-size="14" font-weight="700"
+            font-size="15" font-weight="700"
+          >{{ windOf(position) }}</text>
+          <text
+            :x="point.x" :y="point.y + 10"
+            text-anchor="middle" dominant-baseline="middle"
+            :fill="position === Position.Bottom ? 'var(--color-neutral-content)' : '#1f2f45'"
+            font-size="13" font-weight="700"
           >{{ POSITION_LABELS[position] }}</text>
         </g>
         <text :x="SIZE / 2" :y="SIZE / 2 - 8" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-size="44" font-weight="700">{{ result.skippedStacks }}</text>
