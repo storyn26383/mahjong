@@ -271,7 +271,7 @@ const isSelfDraw = computed(() => effectiveWinMethod(situation.value) === WinMet
     <section class="flex flex-col gap-2">
       <div class="section-label">台數明細</div>
       <div class="panel px-4 py-2">
-        <div v-if="!isManual && !isFlowerWin && !isComplete" class="py-2 text-sm opacity-60">手牌要滿 {{ HAND_SIZE }} 張才能算台，請到「聽牌」頁輸入手牌。</div>
+        <div v-if="!isManual && !isFlowerWin && !isComplete" class="py-2 text-sm opacity-60">手牌要滿 {{ HAND_SIZE }} 張才能算台，請在下方「修改手牌」輸入手牌。</div>
         <div v-else-if="!isManual && !isFlowerWin && !isWaiting" class="py-2 text-sm text-error">手牌尚未聽牌，無法算台。</div>
         <div v-else-if="!isManual && !score" class="py-2 text-sm text-error">沒胡：{{ tileName(situation.winningTile) }} 無法和手牌組成五組面子加一對將。</div>
         <ul v-else-if="score && score.lines.length" class="divide-y divide-base-300">
