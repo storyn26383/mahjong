@@ -79,6 +79,8 @@ const situation = useSituation()
 const stakes = useStakes()
 
 const isComplete = computed(() => handSize(hand.value) === HAND_SIZE)
+/** 手牌未滿就預設手動勾選，入齊就切返自動；之後仍可以手動切換。 */
+watch(isComplete, complete => { mode.value = complete ? ScoringMode.Automatic : ScoringMode.Manual }, { immediate: true })
 const waitingTiles = computed(() => analyseWaits(hand.value).map(wait => wait.tile))
 const isWaiting = computed(() => waitingTiles.value.length > 0)
 watch(waitingTiles, (tiles) => {
