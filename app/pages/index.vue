@@ -96,8 +96,10 @@ const SEAT_LABEL_POINTS: Record<Position, { x: number, y: number }> = {
             font-size="13" font-weight="700"
           >{{ POSITION_LABELS[position] }}</text>
         </g>
-        <text :x="SIZE / 2" :y="SIZE / 2 - 8" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-size="44" font-weight="700">{{ result.skippedStacks }}</text>
-        <text :x="SIZE / 2" :y="SIZE / 2 + 26" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" opacity="0.7" font-size="13">點</text>
+        <text :x="SIZE / 2 + 2" :y="SIZE / 2 + 16" text-anchor="middle" fill="#ffffff">
+          <tspan font-size="44" font-weight="700">{{ result.skippedStacks }}</tspan>
+          <tspan font-size="13" opacity="0.7" dx="4">點</tspan>
+        </text>
       </svg>
     </div>
 
