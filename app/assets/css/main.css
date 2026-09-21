@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: autumn --default;
+}
+
+body {
+  background: var(--color-base-200);
+  color: var(--color-base-content);
+}
+
+/* 觸控為主嘅 app，focus 唔顯示 outline */
+:focus,
+:focus-visible,
+:focus-within {
+  outline: none;
+  box-shadow: none;
+}
+
+/* 分區小標題 */
+.section-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+
+/* 白色卡片式選項 */
+.choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  min-height: 3.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-field);
+  background: var(--color-base-100);
+  font-weight: 600;
+  line-height: 1.2;
+  transition: background 120ms, color 120ms, border-color 120ms;
+}
+.choice:disabled {
+  opacity: 0.35;
+}
+.choice-active {
+  background: var(--color-neutral);
+  border-color: var(--color-neutral);
+  color: var(--color-neutral-content);
+}
+.choice-success {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-success-content);
+}
+.choice-sub {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+/* 分段切換 */
+.segmented {
+  display: flex;
+  padding: 0.25rem;
+  border-radius: var(--radius-field);
+  background: var(--color-base-300);
+}
+.segmented > button {
+  flex: 1;
+  padding: 0.5rem 0.25rem;
+  border-radius: calc(var(--radius-field) - 0.25rem);
+  font-weight: 600;
+  color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+.segmented > .segmented-active {
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+/* 白色卡片容器 */
+.panel {
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-box);
+  background: var(--color-base-100);
+}
+
+/* 牌面按鈕 */
+.tile-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.75rem;
+  line-height: 0;
+  padding: 0;
+  border-radius: 0.5rem;
+  transition: opacity 120ms, transform 80ms;
+}
+.tile-button:active {
+  transform: scale(0.94);
+}
+.tile-button:disabled {
+  opacity: 0.3;
+}
+.tile-count {
+  position: absolute;
+  top: -0.3rem;
+  right: -0.3rem;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.25rem;
+  border-radius: 999px;
+  background: var(--color-neutral);
+  color: var(--color-neutral-content);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.15rem;
+  text-align: center;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "mahjong",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "generate": "nuxi generate",
+    "preview": "nuxi preview",
+    "typecheck": "nuxi typecheck",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "nuxt": "^4.5.2",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.2",
+    "daisyui": "^5.7.42",
+    "tailwindcss": "^4.3.3",
+    "typescript": "5",
+    "vue-tsc": "^3.3.11"
+  }
+}
