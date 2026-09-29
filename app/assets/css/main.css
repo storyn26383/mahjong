@@ -8,6 +8,17 @@ body {
   color: var(--color-base-content);
 }
 
+/* 禁止 double tap 放大；iOS Safari 唔理 viewport 嘅 user-scalable=no，要靠呢條 */
+html,
+body,
+button,
+input,
+select,
+label,
+a {
+  touch-action: manipulation;
+}
+
 /* 觸控為主嘅 app，focus 唔顯示 outline */
 :focus,
 :focus-visible,
