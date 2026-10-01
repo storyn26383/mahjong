@@ -14,7 +14,7 @@ bun run generate   # 靜態輸出到 .output/public
 
 ## 架構
 
-- `engine/`：純 TypeScript 規則引擎，冇 Vue、冇瀏覽器 API。三個公開入口：`openDoor`、`analyseWaits`、`scoreHand`／`scoreManual`。所有規則改動要有 `bun test`。
+- `engine/`：純 TypeScript 規則引擎，冇 Vue、冇瀏覽器 API。公開入口：`openDoor`、`analyseWaits`、`suggestDiscards`、`scoreHand`／`scoreManual`。所有規則改動要有 `bun test`。
 - `app/`：Nuxt 4 SPA（`ssr: false`），Tailwind 4 + daisyUI 5，內建主題 `autumn`。頁面只收集輸入、調用引擎、渲染輸出，唔放規則邏輯。
 - 手牌、局面、底台、算台模式用 `useState` 加 `usePersistedState`（localStorage）跨頁共用。
 - 台數表喺 `engine/scoring.ts` 嘅 `TAI_VALUES`；複合排除喺 `EXCLUDED_BY_BLESSING` 同 `FORCED_WIN_METHOD`。數值係用戶拍板嘅，唔好自行改。
