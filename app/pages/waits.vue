@@ -42,12 +42,12 @@ const loneWaitLabel = computed(() => {
         <div v-if="discardOptions.length === 0" class="text-base font-semibold text-error">打哪張都尚未聽牌</div>
         <template v-else>
           <div class="flex items-baseline gap-2">
-            <span class="text-lg font-bold text-primary">捨一張聽牌</span>
-            <span class="text-sm opacity-60 ml-auto">點捨的牌打出，點聽的牌算台</span>
+            <span class="text-lg font-bold text-primary">打一張聽牌</span>
+            <span class="text-sm opacity-60 ml-auto">點打的牌打出，點聽的牌算台</span>
           </div>
           <ul class="divide-y divide-base-300">
             <li v-for="option in discardOptions" :key="option.discard" class="flex items-center gap-2 py-2">
-              <span class="text-sm font-semibold">捨</span>
+              <span class="text-sm font-semibold">打</span>
               <button
                 type="button"
                 class="tile-button h-11 w-8"
