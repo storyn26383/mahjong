@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test'
-import { canAddChow, canAddKong, canAddPung, canAddTile, countOf, emptyHand, handSize, isChow, MeldKind } from './hand'
+import { canAddChow, canAddKong, canAddPung, canAddTile, canUseInChow, countOf, emptyHand, handSize, isChow, MAX_HAND_SIZE, MeldKind, type Hand } from './hand'
+import { SUITED_TILES } from './tile'
 
 describe('hand', () => {
   const hand = {
@@ -42,5 +43,28 @@ describe('hand', () => {
     expect(isChow(['m1', 'm1', 'm2'])).toBe(false)
     expect(canAddChow(hand, ['m1', 'm2', 'm3'])).toBe(true)
     expect(canAddChow(hand, ['m7', 'm8', 'm9'])).toBe(false)
+  })
+})
+
+describe('hand size limit', () => {
+  /** 用唔同嘅數牌砌一副指定張數嘅手牌，唔會撞到每種牌 4 張嘅上限。 */
+  const sized = (size: number): Hand => ({ concealed: SUITED_TILES.slice(0, size), melds: [], flowers: [] })
+
+  test('a hand holds at most 17 tiles: 16 plus the one just drawn', () => {
+    expect(MAX_HAND_SIZE).toBe(17)
+  })
+
+  test('a single tile can be added until the hand reaches 17', () => {
+    expect(canAddTile(sized(16), 'z1')).toBe(true)
+    expect(canAddTile(sized(17), 'z1')).toBe(false)
+  })
+
+  test('a meld needs room for 3 more tiles, kongs included', () => {
+    expect(canAddPung(sized(14), 'z1')).toBe(true)
+    expect(canAddPung(sized(15), 'z1')).toBe(false)
+    expect(canAddKong(sized(15), 'z1')).toBe(false)
+    expect(canAddChow(sized(15), ['p1', 'p2', 'p3'])).toBe(false)
+    expect(canUseInChow(sized(15), 'p1')).toBe(false)
+    expect(canUseInChow(sized(14), 'p1')).toBe(true)
   })
 })

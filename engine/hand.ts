@@ -19,6 +19,8 @@ export interface Hand {
 }
 
 export const HAND_SIZE = 16
+/** 摸咗一張未打出時最多 17 張。 */
+export const MAX_HAND_SIZE = HAND_SIZE + 1
 export const TILES_PER_MELD = 3
 export const TILES_PER_PUNG = 3
 export const TILES_PER_KONG = 4
@@ -34,9 +36,13 @@ export const countOf = (hand: Hand, tile: Tile): number =>
 
 const freeCopies = (hand: Hand, tile: Tile): number => COPIES_PER_TILE - countOf(hand, tile)
 
-export const canAddTile = (hand: Hand, tile: Tile): boolean => freeCopies(hand, tile) >= 1
-export const canAddPung = (hand: Hand, tile: Tile): boolean => freeCopies(hand, tile) >= TILES_PER_PUNG
-export const canAddKong = (hand: Hand, tile: Tile): boolean => freeCopies(hand, tile) >= TILES_PER_KONG
+const hasRoomFor = (hand: Hand, size: number): boolean => handSize(hand) + size <= MAX_HAND_SIZE
+
+export const canAddTile = (hand: Hand, tile: Tile): boolean => hasRoomFor(hand, 1) && freeCopies(hand, tile) >= 1
+export const canAddPung = (hand: Hand, tile: Tile): boolean => hasRoomFor(hand, TILES_PER_MELD) && freeCopies(hand, tile) >= TILES_PER_PUNG
+export const canAddKong = (hand: Hand, tile: Tile): boolean => hasRoomFor(hand, TILES_PER_MELD) && freeCopies(hand, tile) >= TILES_PER_KONG
+/** 吃牌時逐張揀，要預留成組 3 張嘅位。 */
+export const canUseInChow = (hand: Hand, tile: Tile): boolean => hasRoomFor(hand, TILES_PER_MELD) && freeCopies(hand, tile) >= 1
 
 export const isChow = (tiles: Tile[]): boolean => {
   if (tiles.length !== TILES_PER_CHOW) return false
@@ -46,4 +52,4 @@ export const isChow = (tiles: Tile[]): boolean => {
 }
 
 export const canAddChow = (hand: Hand, tiles: Tile[]): boolean =>
-  isChow(tiles) && tiles.every(tile => canAddTile(hand, tile))
+  isChow(tiles) && tiles.every(tile => canUseInChow(hand, tile))

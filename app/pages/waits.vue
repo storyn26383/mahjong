@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { DRAWN_HAND_SIZE, suggestDiscards } from '~~/engine/discards'
-import { HAND_SIZE, handSize } from '~~/engine/hand'
+import { suggestDiscards } from '~~/engine/discards'
+import { HAND_SIZE, handSize, MAX_HAND_SIZE } from '~~/engine/hand'
 import { tileName, type Tile } from '~~/engine/tile'
 import { analyseWaits, WaitKind } from '~~/engine/waits'
 
@@ -26,7 +26,7 @@ const discardAndScore = (tile: Tile, winning: Tile) => {
 }
 const size = computed(() => handSize(hand.value))
 const isComplete = computed(() => size.value === HAND_SIZE)
-const isDrawn = computed(() => size.value === DRAWN_HAND_SIZE)
+const isDrawn = computed(() => size.value === MAX_HAND_SIZE)
 const discardOptions = computed(() => suggestDiscards(hand.value))
 const waits = computed(() => analyseWaits(hand.value))
 const loneWaitLabel = computed(() => {

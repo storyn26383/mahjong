@@ -1,9 +1,6 @@
-import { HAND_SIZE, handSize, type Hand } from './hand'
+import { handSize, MAX_HAND_SIZE, type Hand } from './hand'
 import { sortTiles, type Tile } from './tile'
 import { analyseWaits, type Wait } from './waits'
-
-/** 摸咗一張之後嘅手牌張數，要打一張先返到 16 張。 */
-export const DRAWN_HAND_SIZE = HAND_SIZE + 1
 
 export interface DiscardOption {
   discard: Tile
@@ -22,7 +19,7 @@ const unseenCount = (waits: Wait[], discard: Tile): number =>
 
 /** 17 張手牌：列出打完即刻聽牌嘅打法，聽嘅種數多排前，再比未見張數，再按牌序。 */
 export const suggestDiscards = (hand: Hand): DiscardOption[] => {
-  if (handSize(hand) !== DRAWN_HAND_SIZE) return []
+  if (handSize(hand) !== MAX_HAND_SIZE) return []
   return sortTiles([...new Set(hand.concealed)])
     .map(discard => ({ discard, waits: analyseWaits(withoutOne(hand, discard)) }))
     .filter(option => option.waits.length > 0)

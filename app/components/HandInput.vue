@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { canAddChow, canAddKong, canAddPung, canAddTile, countOf, HAND_SIZE, handSize, MeldKind, TILES_PER_KONG, TILES_PER_MELD, TILES_PER_PUNG } from '~~/engine/hand'
+import { canAddChow, canAddKong, canAddPung, canAddTile, canUseInChow, countOf, HAND_SIZE, handSize, MeldKind, TILES_PER_KONG, TILES_PER_MELD, TILES_PER_PUNG } from '~~/engine/hand'
 import { FLOWER_TILES, HONOUR_TILES, isFlower, SUITED_TILES, sortTiles, Suit, suitOf, tileName, type Tile } from '~~/engine/tile'
 
 enum InputMode {
@@ -51,7 +51,7 @@ const isEnabled = (tile: Tile): boolean => {
   if (isFlower(tile)) return mode.value === InputMode.Flower && !hand.value.flowers.includes(tile)
   switch (mode.value) {
     case InputMode.Concealed: return canAddTile(hand.value, tile)
-    case InputMode.Chow: return canAddTile(hand.value, tile) && !pendingChow.value.includes(tile)
+    case InputMode.Chow: return canUseInChow(hand.value, tile) && !pendingChow.value.includes(tile)
     case InputMode.Pung: return canAddPung(hand.value, tile)
     case InputMode.OpenKong:
     case InputMode.ConcealedKong: return canAddKong(hand.value, tile)
