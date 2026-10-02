@@ -53,3 +53,9 @@ export const isChow = (tiles: Tile[]): boolean => {
 
 export const canAddChow = (hand: Hand, tiles: Tile[]): boolean =>
   isChow(tiles) && tiles.every(tile => canUseInChow(hand, tile))
+
+/** 影相等外來來源入手牌前用：唔超過 17 張、每種牌唔超過 4 張、每隻花唔重複。 */
+export const isValidHand = (hand: Hand): boolean =>
+  handSize(hand) <= MAX_HAND_SIZE
+  && [...hand.concealed, ...hand.melds.flatMap(meld => meld.tiles)].every(tile => countOf(hand, tile) <= COPIES_PER_TILE)
+  && new Set(hand.flowers).size === hand.flowers.length

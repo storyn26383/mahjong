@@ -1,0 +1,8 @@
+# Jon Chan 嘅 Mahjong 資料集 v83，CC BY 4.0
+# https://universe.roboflow.com/jon-chan-gnsoa/mahjong-baq4s/dataset/83
+path: data/roboflow/extracted  # 相對 ml/，train.py 會轉做絕對路徑
+train: train/images
+val: valid/images
+test: test/images
+nc: 42
+names: ['1B', '1C', '1D', '1F', '1S', '2B', '2C', '2D', '2F', '2S', '3B', '3C', '3D', '3F', '3S', '4B', '4C', '4D', '4F', '4S', '5B', '5C', '5D', '6B', '6C', '6D', '7B', '7C', '7D', '8B', '8C', '8D', '9B', '9C', '9D', 'EW', 'GD', 'NW', 'RD', 'SW', 'WD', 'WW']

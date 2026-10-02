@@ -4,3 +4,9 @@ node_modules
 dist
 .env
 .env.*
+
+# ml
+ml/data/
+ml/runs/
+ml/.venv/
+ml/*.pt

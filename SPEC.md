@@ -67,6 +67,15 @@
 31a. As a 牌手，I want to 手上有 17 張時見到「打一張聽牌」列表，每行列出打邊張、打完聽咩牌，聽嘅種數多排前，so that 知道打邊張比較好。
 31b. As a 牌手，I want to 點「打」嘅牌就直接打出、留喺聽牌頁；點「聽」嘅牌就打出並跳去算台，so that 少撳幾下。
 
+### 影相
+
+31c. As a 牌手，I want to 喺入牌區撳「拍照」，影一張手牌相或者揀相簿嘅相，so that 唔使逐隻撳。
+31d. As a 牌手，I want to 一張相入面副露一行、手牌一行，自動分出手牌、吃碰槓同花，so that 副露唔使另外入。
+31e. As a 牌手，I want to 喺確認畫面見到相片上每隻牌嘅框同認到嘅牌，點框就可以改正或刪除，so that 認錯可以即刻修正。
+31e1. As a 牌手，I want to 揀完相之後先用手指拉框裁剪，只辨識框入面嘅牌，so that 背景雜物唔會被誤認，牌喺模型眼中亦會大啲。
+31f. As a 牌手，I want to 可以對調邊行係副露，so that 影相角度唔同都用得。
+31g. As a 牌手，I want to 認牌喺手機本機做，唔使上網、唔使 API key，so that 喺麻將枱邊都用得。
+
 ### 計台
 
 32. As a 牌手，I want to 揀胡嘅張牌，so that 工具知道邊張係最後入手。
@@ -251,7 +260,7 @@
 
 ## Out of Scope
 
-- 影相分析（LLM vision 或本地模型）。資料模型已預留，但 v1 完全唔做。
+- 雲端 AI 認牌（LLM vision）。影相認牌改用手機本機跑嘅 YOLO 模型。
 - 記錄成場牌局分數、多局累計、多人同步。
 - 其他規則（廣東、日本、13 張）。
 - 骰仔規則切換（只做 3 顆骰）。
@@ -262,5 +271,5 @@
 ## Further Notes
 
 - 台數表數值來源：[shifu.tw 台數教學](https://shifu.tw/Course/ArticleDetail/18) 文字部份，圖片入面嘅數值以 [Mobile01 16 張台數整理](https://www.mobile01.com/topicdetail.php?f=37&t=300775)、[競技麻將 2 台數表](https://cmj2.com.tw/knowhow/麻將胡牌計分懶人包.aspx?tabs=A)、[104 學習 16 張台數計算](https://nabi.104.com.tw/posts/nabi_post_2ad81828-a71b-4db5-b20d-e90f29714f74)、[維基教科書 臺灣麻將](https://zh.wikibooks.org/zh-tw/臺灣麻將)、[Q8 台數表一覽](https://bb9ibet.net/台灣十六張麻將：台數表一覽/) 嘅共同版本補上，並經用戶確認。字一色 16、天胡 24、花槓 2 係各枱差異最大嘅三項，已按用戶決定寫死。
-- 影相分析將來接入時，只需要產生一個手牌物件交俾引擎，引擎同頁面唔使改。
+- 影相認牌：`ml/` 用 Python + Ultralytics 訓練 YOLO11n（只限 `ml/`，app 唔用 Python），資料集係 Jon Chan 嘅 Mahjong（Roboflow，CC BY 4.0，42 類對應我哋嘅牌）。匯出 ONNX 放 `public/models/`，app 用 onnxruntime-web 喺瀏覽器跑。按高低分兩行，副露行按空隙分組；湊唔成吃碰槓嘅組撥入手牌並提示。
 - 唔會自動 git init 或 commit。

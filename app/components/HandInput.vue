@@ -92,7 +92,10 @@ const removeSortedConcealed = (sortedIndex: number) => {
         手牌（點一下移除）
         <span class="ml-2 font-semibold" :class="size === HAND_SIZE ? 'text-primary' : 'text-base-content'">{{ size }} / {{ HAND_SIZE }} 張</span>
       </div>
-      <button type="button" class="text-sm opacity-60" @click="clear">清空</button>
+      <div class="flex gap-4">
+        <PhotoImport />
+        <button type="button" class="text-sm opacity-60" @click="clear">清空</button>
+      </div>
     </div>
 
     <div class="panel min-h-16 p-2 flex flex-wrap gap-1.5 items-center">

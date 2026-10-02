@@ -27,6 +27,19 @@ a {
   box-shadow: none;
 }
 
+/* 彈出視窗打開時，背景唔可以 scroll：body 固定喺原位（iPhone Safari 唔一定理 overflow: hidden） */
+.scroll-locked,
+.scroll-locked body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+.scroll-locked body {
+  position: fixed;
+  top: var(--scroll-lock-offset, 0);
+  right: 0;
+  left: 0;
+}
+
 /* 分區小標題 */
 .section-label {
   font-size: 0.875rem;
@@ -128,4 +141,54 @@ a {
   font-weight: 700;
   line-height: 1.15rem;
   text-align: center;
+}
+
+/* iPhone 式裁剪框：框外變暗、白色細框、四角 L 形把手、四邊短把手 */
+.crop-frame {
+  outline: 1px solid rgb(255 255 255 / 0.9);
+  box-shadow: 0 0 0 9999px rgb(0 0 0 / 0.5);
+  cursor: move;
+}
+.crop-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, transparent calc(100% / 3 - 0.5px), rgb(255 255 255 / 0.6) calc(100% / 3 - 0.5px), rgb(255 255 255 / 0.6) calc(100% / 3 + 0.5px), transparent calc(100% / 3 + 0.5px), transparent calc(200% / 3 - 0.5px), rgb(255 255 255 / 0.6) calc(200% / 3 - 0.5px), rgb(255 255 255 / 0.6) calc(200% / 3 + 0.5px), transparent calc(200% / 3 + 0.5px)),
+    linear-gradient(to bottom, transparent calc(100% / 3 - 0.5px), rgb(255 255 255 / 0.6) calc(100% / 3 - 0.5px), rgb(255 255 255 / 0.6) calc(100% / 3 + 0.5px), transparent calc(100% / 3 + 0.5px), transparent calc(200% / 3 - 0.5px), rgb(255 255 255 / 0.6) calc(200% / 3 - 0.5px), rgb(255 255 255 / 0.6) calc(200% / 3 + 0.5px), transparent calc(200% / 3 + 0.5px));
+}
+.crop-handle {
+  --handle-length: 1.25rem;
+  --handle-thickness: 3px;
+  position: absolute;
+  border-color: #ffffff;
+  border-style: solid;
+  border-width: 0;
+}
+/* 加大觸控範圍 */
+.crop-handle::before {
+  content: '';
+  position: absolute;
+  inset: -0.75rem;
+}
+.crop-handle[data-handle$='left'],
+.crop-handle[data-handle$='right'] {
+  width: var(--handle-length);
+  height: var(--handle-length);
+}
+.crop-handle[data-handle^='top'] { top: calc(-1 * var(--handle-thickness)); border-top-width: var(--handle-thickness); }
+.crop-handle[data-handle^='bottom'] { bottom: calc(-1 * var(--handle-thickness)); border-bottom-width: var(--handle-thickness); }
+.crop-handle[data-handle$='left'] { left: calc(-1 * var(--handle-thickness)); border-left-width: var(--handle-thickness); }
+.crop-handle[data-handle$='right'] { right: calc(-1 * var(--handle-thickness)); border-right-width: var(--handle-thickness); }
+.crop-handle[data-handle='top'],
+.crop-handle[data-handle='bottom'] {
+  left: calc(50% - var(--handle-length) / 2);
+  width: var(--handle-length);
+  height: 0;
+}
+.crop-handle[data-handle='left'],
+.crop-handle[data-handle='right'] {
+  top: calc(50% - var(--handle-length) / 2);
+  width: 0;
+  height: var(--handle-length);
 }

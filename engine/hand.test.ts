@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { canAddChow, canAddKong, canAddPung, canAddTile, canUseInChow, countOf, emptyHand, handSize, isChow, MAX_HAND_SIZE, MeldKind, type Hand } from './hand'
+import { canAddChow, canAddKong, canAddPung, canAddTile, canUseInChow, countOf, emptyHand, handSize, isChow, isValidHand, MAX_HAND_SIZE, MeldKind, type Hand } from './hand'
 import { SUITED_TILES } from './tile'
 
 describe('hand', () => {
@@ -66,5 +66,23 @@ describe('hand size limit', () => {
     expect(canAddChow(sized(15), ['p1', 'p2', 'p3'])).toBe(false)
     expect(canUseInChow(sized(15), 'p1')).toBe(false)
     expect(canUseInChow(sized(14), 'p1')).toBe(true)
+  })
+})
+
+describe('isValidHand', () => {
+  test('a hand within 17 tiles and 4 copies per tile is valid', () => {
+    expect(isValidHand({ concealed: SUITED_TILES.slice(0, 17), melds: [], flowers: [] })).toBe(true)
+  })
+
+  test('more than 17 tiles is invalid', () => {
+    expect(isValidHand({ concealed: SUITED_TILES.slice(0, 18), melds: [], flowers: [] })).toBe(false)
+  })
+
+  test('a fifth copy of a tile across hand and melds is invalid', () => {
+    expect(isValidHand({ concealed: ['m1', 'm1'], melds: [{ kind: MeldKind.Pung, tiles: ['m1', 'm1', 'm1'] }], flowers: [] })).toBe(false)
+  })
+
+  test('the same flower twice is invalid', () => {
+    expect(isValidHand({ concealed: [], melds: [], flowers: ['f1', 'f1'] })).toBe(false)
   })
 })

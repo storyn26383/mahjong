@@ -12,6 +12,7 @@ export const useHand = () => {
   const addFlower = (tile: Tile) => hand.value.flowers.push(tile)
   const removeFlower = (index: number) => hand.value.flowers.splice(index, 1)
   const clear = () => { hand.value = emptyHand() }
+  const replace = (next: Hand) => { hand.value = next }
 
-  return { hand, addConcealed, removeConcealed, addMeld, removeMeld, addFlower, removeFlower, clear }
+  return { hand, addConcealed, removeConcealed, addMeld, removeMeld, addFlower, removeFlower, clear, replace }
 }
